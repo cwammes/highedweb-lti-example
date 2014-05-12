@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+    <tx:annotation-driven />
+    <mvc:annotation-driven validator="validator" />
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"><value>${db.driverClass}</value></property>
+        <property name="url"><value>${db.url}</value></property>
+        <property name="username"><value>${db.username}</value></property>
+        <property name="password"><value>${db.password}</value></property>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="edu.bgsu.**" />
+        <property name="hibernateProperties">
+            <props>
+                <!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
+                <prop key="hibernate.dialect">${db.dialect}</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.use_sql_comments">true</prop>
+                <prop key="hibernate.connection.defaultNChar">true</prop>
+                <prop key="hibernate.connection.pool_size">2</prop>
+                <prop key="hibernate.id.new_generator_mappings">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- Beans -->
+    <bean id="ltiOauth" class="org.highedweb.lti.domain.LtiOauth">
+    	<property name="oauthKey" value="key" />
+    	<property name="oauthSecret" value="secret" />
+    </bean>
+    
+    <!-- DAO Objects -->
+    <bean id="ltiOauthDAO" class="org.highedweb.lti.dao.LtiOauthDAOImpl">
+    	<property name="ltiOauth" ref="ltiOauth" />
+    </bean> 
+    
+    <bean id="assignmentDAO" class="org.highedweb.lti.dao.AssignmentDAOImpl">
+    	<property name="sessionFactory" ref="sessionFactory"/>
+    </bean>     
+    
+    <!-- Services -->
+    <bean id="oauthValidationService" class="org.highedweb.lti.service.OauthValidationImpl">
+    	<property name="ltiOauthDAO" ref="ltiOauthDAO" />
+    </bean>   
+    
+    <bean id="assignmentService" class="org.highedweb.lti.service.AssignmentServiceImpl">
+    	<property name="assignmentDAO" ref="assignmentDAO" />
+    </bean>        
+    
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="webBindingInitializer">
+            <!-- Configures Spring MVC DataBinder instances -->
+            <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+                <property name="validator" ref="validator" />
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Creates the JSR-303 Validator -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource" /> 
+    </bean>      
+    
+
+</beans>
