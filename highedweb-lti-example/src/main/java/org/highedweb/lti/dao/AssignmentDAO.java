@@ -13,5 +13,7 @@ public interface AssignmentDAO {
 	public Assignment getAssignmentByContextAndUserId(String contextId, String userID);
 	
 	public List<Assignment> getAssignmentsByContext(String contextId);
+	
+	public Assignment getAssignmentById(int id);
 
 }

@@ -1,11 +1,13 @@
 package org.highedweb.lti.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.highedweb.lti.dao.AssignmentDAO;
 import org.highedweb.lti.domain.Assignment;
 import org.highedweb.lti.domain.LtiOauth;
+import org.highedweb.lti.dto.AssignmentOutcome;
 import org.highedweb.lti.dto.LtiParams;
 
 public class AssignmentServiceImpl implements AssignmentService{
@@ -73,6 +75,20 @@ public class AssignmentServiceImpl implements AssignmentService{
 	public List<Assignment> getAssignmentsByContext(String contextId) {
 		// TODO Auto-generated method stub
 		return assignmentDAO.getAssignmentsByContext(contextId);
+	}
+
+	@Override
+	public Assignment setAssignmentOutomce(AssignmentOutcome assignmentOutcome) {
+		Assignment assignment = assignmentDAO.getAssignmentById(Integer.parseInt(assignmentOutcome.getOutcomeId()));
+		
+		assignment.setAssignmentGrade(assignmentOutcome.getOutcomeGrade());
+		assignment.setAssignmentGradeDate(new Date());
+		
+		assignment = assignmentDAO.updateAssignment(assignment);
+		
+		//Need to POST back to LMS
+		
+		return assignment;
 	}
 
 }

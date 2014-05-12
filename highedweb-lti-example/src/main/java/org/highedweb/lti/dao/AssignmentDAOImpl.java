@@ -63,4 +63,17 @@ public class AssignmentDAOImpl implements AssignmentDAO{
 
 	}
 
+	@Override
+	public Assignment getAssignmentById(int id) {
+		Session session = sessionFactory.getCurrentSession();		
+		
+        @SuppressWarnings("unchecked")
+        List<Assignment> assignmentList = session.createQuery("from Assignment where id = ?").setInteger(0, id).list();
+        
+        if(assignmentList.size() == 1)
+        	return assignmentList.get(0);
+        else 
+        	return null;
+	}
+
 }
