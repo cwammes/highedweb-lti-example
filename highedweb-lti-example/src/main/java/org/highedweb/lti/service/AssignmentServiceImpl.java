@@ -23,16 +23,56 @@ public class AssignmentServiceImpl implements AssignmentService{
 	}
 
 	@Override
-	public Assignment setAssignmentEntry(List<LtiParams> ltiParams) {
+	public Assignment initializeAssignmentEntry(List<LtiParams> ltiParams) {
 		
 		Assignment assignment = new Assignment();
 		
 		for(int x = 0; x < ltiParams.size(); x++){
-			if(ltiParams.get(x).getParamName().matches(""))
-				assignment.setContextId("");
+			if(ltiParams.get(x).getParamName().matches("context_id"))
+				assignment.setContextId(ltiParams.get(x).getParamValue());
+			
+			else if(ltiParams.get(x).getParamName().matches("user_id"))
+				assignment.setUserId(ltiParams.get(x).getParamValue());
+			
+			else if(ltiParams.get(x).getParamName().matches("lis_person_name_family"))
+				assignment.setLisPersonNameFamily(ltiParams.get(x).getParamValue());	
+			
+			else if(ltiParams.get(x).getParamName().matches("lis_person_name_given"))
+				assignment.setLisPersonNameGiven(ltiParams.get(x).getParamValue());		
+			
+			else if(ltiParams.get(x).getParamName().matches("lis_person_name_full"))
+				assignment.setLisPersonNameFull(ltiParams.get(x).getParamValue());	
+			
+			else if(ltiParams.get(x).getParamName().matches(""))
+				assignment.setLisPersonContactEmailPrimary(ltiParams.get(x).getParamValue());
+			
+			else if(ltiParams.get(x).getParamName().matches("lis_outcome_service_url"))
+				assignment.setLisOutcomeServiceUrl(ltiParams.get(x).getParamValue());				
 		}
 		
 		return assignment;
+	}
+
+	@Override
+	public Assignment updateAssignment(Assignment assignment) {
+		return assignmentDAO.updateAssignment(assignment);
+	}
+
+	@Override
+	public Assignment getAssignmentByContextAndUserId(Assignment assignment) {
+		
+		Assignment assignmentDomain = assignmentDAO.getAssignmentByContextAndUserId(assignment.getContextId(), assignment.getUserId());
+		
+		if(assignmentDomain.getUserId().matches(assignment.getUserId()))
+			return assignmentDomain;
+		else
+			return assignment;
+	}
+
+	@Override
+	public List<Assignment> getAssignmentsByContext(String contextId) {
+		// TODO Auto-generated method stub
+		return assignmentDAO.getAssignmentsByContext(contextId);
 	}
 
 }

@@ -3,10 +3,13 @@ package org.highedweb.lti.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.highedweb.lti.domain.Assignment;
 import org.highedweb.lti.dto.AssignmentTwoSubmission;
 import org.highedweb.lti.dto.LtiParams;
+import org.highedweb.lti.service.AssignmentServiceImpl;
 import org.highedweb.lti.service.OauthValidationImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,10 +24,12 @@ public class AssignmentTwo {
 	Logger logger = Logger.getLogger(getClass());
 	
 	private OauthValidationImpl oauthValidationService;
+	private AssignmentServiceImpl assignmentService;
 	
 	@Autowired
-	AssignmentTwo(OauthValidationImpl oauthValidationService){
+	AssignmentTwo(OauthValidationImpl oauthValidationService, AssignmentServiceImpl assignmentService){
 		this.oauthValidationService = oauthValidationService;
+		this.assignmentService = assignmentService;
 	}		
 	
 	@RequestMapping(value="assignmentTwo", method = RequestMethod.POST)
@@ -36,14 +41,18 @@ public class AssignmentTwo {
 				
 				//Get List of LTI Parameters and put into session
 		        List <LtiParams> ltiParams = oauthValidationService.setLtiParams(request);
+		        HttpSession session = request.getSession();
+		        Assignment assignment = assignmentService.initializeAssignmentEntry(ltiParams);
 				
 				//Return the instructor view
 				if(request.getParameter("roles").toUpperCase().indexOf("INSTRUCTOR") != -1){
 					logger.info("Role has Instructor");
 					
 					//Get assignments for this course
+					List <Assignment> assignmentList = assignmentService.getAssignmentsByContext(assignment.getContextId());
 					
 					//Add assignments to the model
+					model.addAttribute("assignmentList", assignmentList);
 					
 					//Return to the view
 					return "assignmentTwo/instructor";
@@ -51,7 +60,13 @@ public class AssignmentTwo {
 				
 				//Return the student view
 				else{
+					//Check if assignment exists
+					assignment = assignmentService.getAssignmentByContextAndUserId(assignment);
+			        session.setAttribute("assignment", assignment);
+					
 					AssignmentTwoSubmission assignmentTwoSubmission = new AssignmentTwoSubmission();
+					assignmentTwoSubmission.setTitle(assignment.getAssignmentTitle());
+					assignmentTwoSubmission.setBody(assignment.getAssignmentBody());
 					
 					model.addAttribute("assignmentTwoSubmission", assignmentTwoSubmission);
 					
@@ -72,6 +87,17 @@ public class AssignmentTwo {
 	public String assignmentTwoPostAssignment(HttpServletRequest request, @ModelAttribute("assignmentTwoSubmission") AssignmentTwoSubmission assignmentTwoSubmission,Model model){
 		
 		logger.info("Student Assignment Submitted");
+		
+        HttpSession session = request.getSession();
+        Assignment assignment = (Assignment) session.getAttribute("assignment");
+        
+        //Set new assignment information
+        assignment.setAssignmentTitle(assignmentTwoSubmission.getTitle());
+        assignment.setAssignmentBody(assignmentTwoSubmission.getBody());
+        
+        //Update assignment
+        assignmentService.updateAssignment(assignment);
+		
 		model.addAttribute("assignmentTwoSubmission", assignmentTwoSubmission);
 		
 		return "assignmentTwo/student";

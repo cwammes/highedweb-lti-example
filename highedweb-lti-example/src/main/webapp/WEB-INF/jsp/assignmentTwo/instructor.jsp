@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,8 +14,16 @@
 	<tr>
 		<td>First Name</td>
 		<td>Last Name</td>
-		<td>Submit Date</td>
+		<td>Submission Title</td>
 	</tr>
+	
+	<c:forEach var="row" items="${assignmentList}">
+	<tr>
+		<td><c:out value="${row.lisPersonNameGiven}" /></td>
+		<td><c:out value="${row.lisPersonNameFamily}" /></td>
+		<td><c:out value="${row.assignmentTitle}" /></td>
+	</tr>
+	</c:forEach>
 	
 </table>
 

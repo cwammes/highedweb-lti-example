@@ -9,6 +9,12 @@ public interface AssignmentService {
 
 	public Assignment addAssignment(Assignment assignment);
 	
-	public Assignment setAssignmentEntry(List<LtiParams> ltiParams);
+	public Assignment initializeAssignmentEntry(List<LtiParams> ltiParams);
+	
+	public Assignment updateAssignment(Assignment assignment);
+	
+	public Assignment getAssignmentByContextAndUserId(Assignment assignment);
+	
+	public List<Assignment> getAssignmentsByContext(String contextId);
 	
 }

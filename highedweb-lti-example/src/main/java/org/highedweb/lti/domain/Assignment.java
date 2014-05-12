@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table(name="user_roles")
+@Table(name="assignments")
 public class Assignment  implements Serializable {
 	
 	private static final long serialVersionUID = 1L;	

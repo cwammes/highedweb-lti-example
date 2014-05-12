@@ -2,6 +2,7 @@ package org.highedweb.lti.dao;
 
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.highedweb.lti.domain.Assignment;
@@ -32,21 +33,34 @@ public class AssignmentDAOImpl implements AssignmentDAO{
 
 	@Override
 	public Assignment updateAssignment(Assignment assignment) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.getCurrentSession();
+		
+		session.saveOrUpdate(assignment);
+		return assignment;
 	}
 
 	@Override
 	public Assignment getAssignmentByContextAndUserId(String contextId,
 			String userID) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.getCurrentSession();		
+		
+        @SuppressWarnings("unchecked")
+        List<Assignment> assignmentList = session.createQuery("from Assignment where contextId = ? and userId = ?").setString(0, contextId).setString(1, userID).list();
+        
+        if(assignmentList.size() == 1)
+        	return assignmentList.get(0);
+        else 
+        	return null;
 	}
 
 	@Override
 	public List<Assignment> getAssignmentsByContext(String contextId) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.getCurrentSession();
+		
+        List<Assignment> assignmentList = session.createQuery("from Assignment where contextId = ?").setString(0, contextId).list();
+        
+        return assignmentList;
+
 	}
 
 }
