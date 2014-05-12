@@ -1,6 +1,7 @@
 package org.highedweb.lti.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +19,13 @@ public class Assignment  implements Serializable {
 	
 	//LTI Information
 	private int id;
+	
+	private String toolConsumerInstanceGuid;
+	
 	private String contextId;
 	private String userId;
 	private String lisOutcomeServiceUrl;
+	private String lisResultSourcedid;	
 	private String lisPersonContactEmailPrimary;
 	private String lisPersonNameFull;
 	private String lisPersonNameFamily;
@@ -30,6 +35,9 @@ public class Assignment  implements Serializable {
 	private String assignmentTitle;
 	private String assignmentBody;
 	private String assignmentGrade;
+	private Date assignmentSubmissionDate;
+	private String assignmentGradeUser;
+	private Date assignmentGradeDate;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE,  /* Generate sequence numbers by storing used
@@ -125,9 +133,51 @@ public class Assignment  implements Serializable {
 	public String getAssignmentGrade() {
 		return assignmentGrade;
 	}
+	
 	public void setAssignmentGrade(String assignmentGrade) {
 		this.assignmentGrade = assignmentGrade;
+	}
+	
+	@Column
+	public String getToolConsumerInstanceGuid() {
+		return toolConsumerInstanceGuid;
+	}
+	public void setToolConsumerInstanceGuid(String toolConsumerInstanceGuid) {
+		this.toolConsumerInstanceGuid = toolConsumerInstanceGuid;
+	}
+	
+	@Column
+	public String getLisResultSourcedid() {
+		return lisResultSourcedid;
+	}
+	public void setLisResultSourcedid(String lisResultSourcedid) {
+		this.lisResultSourcedid = lisResultSourcedid;
+	}
+	
+	@Column
+	public Date getAssignmentSubmissionDate() {
+		return assignmentSubmissionDate;
+	}
+	public void setAssignmentSubmissionDate(Date assignmentSubmissionDate) {
+		this.assignmentSubmissionDate = assignmentSubmissionDate;
+	}
+	
+	@Column
+	public String getAssignmentGradeUser() {
+		return assignmentGradeUser;
+	}
+	public void setAssignmentGradeUser(String assignmentGradeUser) {
+		this.assignmentGradeUser = assignmentGradeUser;
+	}
+	
+	@Column
+	public Date getAssignmentGradeDate() {
+		return assignmentGradeDate;
+	}
+	public void setAssignmentGradeDate(Date assignmentGradeDate) {
+		this.assignmentGradeDate = assignmentGradeDate;
 	}	
+	
 	
 
 }
