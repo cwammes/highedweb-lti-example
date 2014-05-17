@@ -26,6 +26,9 @@ public class AssignmentServiceImpl implements AssignmentService{
 	
 	@Override
 	public Assignment addAssignment(Assignment assignment) {
+		assignment.setAssignmentSubmissionDate(new Date());
+
+		
 		return assignmentDAO.addAssignment(assignment);
 	}
 
@@ -69,6 +72,8 @@ public class AssignmentServiceImpl implements AssignmentService{
 
 	@Override
 	public Assignment updateAssignment(Assignment assignment) {
+		assignment.setAssignmentSubmissionDate(new Date());
+		
 		return assignmentDAO.updateAssignment(assignment);
 	}
 
