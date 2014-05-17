@@ -49,7 +49,7 @@ public class AssignmentTwo {
 					logger.info("Role has Instructor");
 					
 					//Get assignments for this course
-					List <Assignment> assignmentList = assignmentService.getAssignmentsByContext(assignment.getContextId());
+					List <Assignment> assignmentList = assignmentService.getAssignmentsByContextResourceLinkId(assignment.getContextId(), assignment.getResourceLinkId());
 					
 					//Add assignments to the model
 					model.addAttribute("assignmentList", assignmentList);

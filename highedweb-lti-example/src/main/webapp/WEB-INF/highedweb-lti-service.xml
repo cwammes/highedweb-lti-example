@@ -73,6 +73,7 @@
     
     <bean id="assignmentService" class="org.highedweb.lti.service.AssignmentServiceImpl">
     	<property name="assignmentDAO" ref="assignmentDAO" />
+    	<property name="oauthValidationService" ref="oauthValidationService" />
     </bean>        
     
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">

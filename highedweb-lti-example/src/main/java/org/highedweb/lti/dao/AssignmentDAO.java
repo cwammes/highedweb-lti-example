@@ -12,7 +12,11 @@ public interface AssignmentDAO {
 	
 	public Assignment getAssignmentByContextAndUserId(String contextId, String userID);
 	
+	public Assignment getAssignmentByContextUserIdResourceLinkId(String contextId, String userId, String resourceLinkId);
+	
 	public List<Assignment> getAssignmentsByContext(String contextId);
+	
+	public List<Assignment> getAssignmentsByContextResourceLinkId(String contextId, String resourceLinkId);
 	
 	public Assignment getAssignmentById(int id);
 

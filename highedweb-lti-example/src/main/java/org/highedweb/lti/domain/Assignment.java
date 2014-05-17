@@ -26,6 +26,7 @@ public class Assignment  implements Serializable {
 	private String userId;
 	private String lisOutcomeServiceUrl;
 	private String lisResultSourcedid;	
+	private String resourceLinkId;
 	private String lisPersonContactEmailPrimary;
 	private String lisPersonNameFull;
 	private String lisPersonNameFamily;
@@ -178,6 +179,12 @@ public class Assignment  implements Serializable {
 		this.assignmentGradeDate = assignmentGradeDate;
 	}	
 	
-	
+	@Column
+	public String getResourceLinkId() {
+		return resourceLinkId;
+	}
+	public void setResourceLinkId(String resourceLinkId) {
+		this.resourceLinkId = resourceLinkId;
+	}	
 
 }

@@ -14,10 +14,15 @@ public class AssignmentServiceImpl implements AssignmentService{
 
 	Logger logger = Logger.getLogger(getClass());
 	private AssignmentDAO assignmentDAO;
+	private OauthValidation oauthValidationService;
 	
 	public void setAssignmentDAO(AssignmentDAO assignmentDAO){
 		this.assignmentDAO = assignmentDAO;
-	}	
+	}
+	
+	public void setOauthValidationService(OauthValidation oauthValidationService){
+		this.oauthValidationService = oauthValidationService;
+	}
 	
 	@Override
 	public Assignment addAssignment(Assignment assignment) {
@@ -49,7 +54,14 @@ public class AssignmentServiceImpl implements AssignmentService{
 				assignment.setLisPersonContactEmailPrimary(ltiParams.get(x).getParamValue());
 			
 			else if(ltiParams.get(x).getParamName().matches("lis_outcome_service_url"))
-				assignment.setLisOutcomeServiceUrl(ltiParams.get(x).getParamValue());				
+				assignment.setLisOutcomeServiceUrl(ltiParams.get(x).getParamValue());		
+			
+			else if(ltiParams.get(x).getParamName().matches("lis_result_sourcedid"))
+				assignment.setLisResultSourcedid(ltiParams.get(x).getParamValue());			
+			
+			else if(ltiParams.get(x).getParamName().matches("resource_link_id"))
+				assignment.setResourceLinkId(ltiParams.get(x).getParamValue());			
+		
 		}
 		
 		return assignment;
@@ -63,9 +75,9 @@ public class AssignmentServiceImpl implements AssignmentService{
 	@Override
 	public Assignment getAssignmentByContextAndUserId(Assignment assignment) {
 		
-		Assignment assignmentDomain = assignmentDAO.getAssignmentByContextAndUserId(assignment.getContextId(), assignment.getUserId());
+		Assignment assignmentDomain = assignmentDAO.getAssignmentByContextUserIdResourceLinkId(assignment.getContextId(), assignment.getUserId(), assignment.getResourceLinkId());
 		
-		if(assignmentDomain.getUserId().matches(assignment.getUserId()))
+		if(assignmentDomain != null && assignmentDomain.getUserId().matches(assignment.getUserId()))
 			return assignmentDomain;
 		else
 			return assignment;
@@ -77,6 +89,11 @@ public class AssignmentServiceImpl implements AssignmentService{
 		return assignmentDAO.getAssignmentsByContext(contextId);
 	}
 
+	public List<Assignment> getAssignmentsByContextResourceLinkId(String contextId, String resourceLinkId) {
+		// TODO Auto-generated method stub
+		return assignmentDAO.getAssignmentsByContextResourceLinkId(contextId, resourceLinkId);
+	}	
+	
 	@Override
 	public Assignment setAssignmentOutomce(AssignmentOutcome assignmentOutcome) {
 		Assignment assignment = assignmentDAO.getAssignmentById(Integer.parseInt(assignmentOutcome.getOutcomeId()));

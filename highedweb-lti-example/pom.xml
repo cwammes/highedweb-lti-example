@@ -85,7 +85,12 @@
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client</artifactId>
 			<version>1.18.0-rc</version>
-		</dependency>                    
+		</dependency>
+		<dependency>
+			<groupId>com.google.gdata</groupId>
+			<artifactId>gdata-core-1.0</artifactId>
+			<version>1.41.3</version>
+		</dependency>		                    
     </dependencies>
     <repositories>
 		<repository>
@@ -93,6 +98,10 @@
 		  <name>OAuth Repository</name>
 		  <url>http://oauth.googlecode.com/svn/code/maven</url>
 		</repository>
+		<repository>
+			<id>mandubian-mvn</id>
+			<url>http://mandubian-mvn.googlecode.com/svn/trunk/mandubian-mvn/repository</url>
+		</repository>		
 	</repositories>
     <build>
         <plugins>

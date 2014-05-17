@@ -53,7 +53,7 @@ public class AssignmentThree {
 					session.setAttribute("assignment", assignment);
 					
 					//Get assignments for this course
-					List <Assignment> assignmentList = assignmentService.getAssignmentsByContext(assignment.getContextId());
+					List <Assignment> assignmentList = assignmentService.getAssignmentsByContextResourceLinkId(assignment.getContextId(), assignment.getResourceLinkId());
 					
 					//Add assignments to the model
 					model.addAttribute("assignmentList", assignmentList);
@@ -86,6 +86,8 @@ public class AssignmentThree {
 			
 			//Access denied
 			catch(Exception e){
+				logger.error(e.getMessage());
+				e.printStackTrace();
 				return "accessdenied";
 			}
 		
@@ -100,10 +102,15 @@ public class AssignmentThree {
         Assignment assignment = (Assignment) session.getAttribute("assignment");
         
         //Set new assignment information
-        assignmentService.setAssignmentOutomce(assignmentOutcome);
+        assignment = assignmentService.setAssignmentOutomce(assignmentOutcome);
+        
+        oauthValidationService.LtiOutcomeService("key", assignment);
 
 		//Get assignments for this course
-		List <Assignment> assignmentList = assignmentService.getAssignmentsByContext(assignment.getContextId());
+		List <Assignment> assignmentList = assignmentService.getAssignmentsByContextResourceLinkId(assignment.getContextId(), assignment.getResourceLinkId());
+		
+		for(int x = 0; x < assignmentList.size(); x++)
+			logger.info("Outcome Details:  StudentName=" + assignmentList.get(x).getLisPersonNameFull() + "&Outcome=" + assignmentList.get(x).getAssignmentGrade());
 		
 		//Add assignments to the model
 		model.addAttribute("assignmentList", assignmentList);

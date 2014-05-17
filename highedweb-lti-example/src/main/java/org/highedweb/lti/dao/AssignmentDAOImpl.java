@@ -76,4 +76,30 @@ public class AssignmentDAOImpl implements AssignmentDAO{
         	return null;
 	}
 
+	@Override
+	public Assignment getAssignmentByContextUserIdResourceLinkId(
+			String contextId, String userId, String resourceLinkId) {
+		Session session = sessionFactory.getCurrentSession();		
+		
+        @SuppressWarnings("unchecked")
+        List<Assignment> assignmentList = session.createQuery("from Assignment where contextId = ? and userId = ? and resourceLinkId = ?").setString(0, contextId)
+        	.setString(1, userId).setString(2, resourceLinkId).list();
+        
+        if(assignmentList.size() == 1)
+        	return assignmentList.get(0);
+        else 
+        	return null;
+	}
+
+	@Override
+	public List<Assignment> getAssignmentsByContextResourceLinkId(
+			String contextId, String resourceLinkId) {
+		Session session = sessionFactory.getCurrentSession();
+		
+        List<Assignment> assignmentList = session.createQuery("from Assignment where contextId = ? and resourceLinkId = ?").setString(0, contextId)
+        		.setString(1, resourceLinkId).list();
+        
+        return assignmentList;
+	}
+
 }
