@@ -115,6 +115,10 @@ public class AssignmentThree {
 		//Add assignments to the model
 		model.addAttribute("assignmentList", assignmentList);
 		
+		//Reset assignmentOutcome
+		assignmentOutcome = new AssignmentOutcome();
+		model.addAttribute("assignmentOutcome", assignmentOutcome);
+		
 		return "assignmentThree/instructor";
 	}	
 }
