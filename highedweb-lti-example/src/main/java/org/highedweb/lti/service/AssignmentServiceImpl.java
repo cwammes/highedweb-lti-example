@@ -14,14 +14,14 @@ public class AssignmentServiceImpl implements AssignmentService{
 
 	Logger logger = Logger.getLogger(getClass());
 	private AssignmentDAO assignmentDAO;
-	private OauthValidation oauthValidationService;
+	private LtiService ltiService;
 	
 	public void setAssignmentDAO(AssignmentDAO assignmentDAO){
 		this.assignmentDAO = assignmentDAO;
 	}
 	
-	public void setOauthValidationService(OauthValidation oauthValidationService){
-		this.oauthValidationService = oauthValidationService;
+	public void setLtiService(LtiService ltiService){
+		this.ltiService = ltiService;
 	}
 	
 	@Override

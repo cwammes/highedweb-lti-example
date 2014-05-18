@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.highedweb.lti.dto.LtiParams;
 
-public interface OauthValidation {
+public interface LtiService {
 	 
 	public void OauthValidator(HttpServletRequest request) throws Exception;
 	

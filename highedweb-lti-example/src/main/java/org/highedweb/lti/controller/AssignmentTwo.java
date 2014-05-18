@@ -10,7 +10,7 @@ import org.highedweb.lti.domain.Assignment;
 import org.highedweb.lti.dto.AssignmentTwoSubmission;
 import org.highedweb.lti.dto.LtiParams;
 import org.highedweb.lti.service.AssignmentServiceImpl;
-import org.highedweb.lti.service.OauthValidationImpl;
+import org.highedweb.lti.service.LtiServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +23,12 @@ public class AssignmentTwo {
 
 	Logger logger = Logger.getLogger(getClass());
 	
-	private OauthValidationImpl oauthValidationService;
+	private LtiServiceImpl ltiService;
 	private AssignmentServiceImpl assignmentService;
 	
 	@Autowired
-	AssignmentTwo(OauthValidationImpl oauthValidationService, AssignmentServiceImpl assignmentService){
-		this.oauthValidationService = oauthValidationService;
+	AssignmentTwo(LtiServiceImpl ltiService, AssignmentServiceImpl assignmentService){
+		this.ltiService = ltiService;
 		this.assignmentService = assignmentService;
 	}		
 	
@@ -37,10 +37,10 @@ public class AssignmentTwo {
 			
 			//Check if they are authorized to see this
 			try{
-				oauthValidationService.OauthValidator(request);
+				ltiService.OauthValidator(request);
 				
 				//Get List of LTI Parameters and put into session
-		        List <LtiParams> ltiParams = oauthValidationService.setLtiParams(request);
+		        List <LtiParams> ltiParams = ltiService.setLtiParams(request);
 		        HttpSession session = request.getSession();
 		        Assignment assignment = assignmentService.initializeAssignmentEntry(ltiParams);
 				

@@ -67,13 +67,13 @@
     </bean>     
     
     <!-- Services -->
-    <bean id="oauthValidationService" class="org.highedweb.lti.service.OauthValidationImpl">
+    <bean id="ltiService" class="org.highedweb.lti.service.LtiServiceImpl">
     	<property name="ltiOauthDAO" ref="ltiOauthDAO" />
     </bean>   
     
     <bean id="assignmentService" class="org.highedweb.lti.service.AssignmentServiceImpl">
     	<property name="assignmentDAO" ref="assignmentDAO" />
-    	<property name="oauthValidationService" ref="oauthValidationService" />
+    	<property name="ltiService" ref="ltiService" />
     </bean>        
     
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">

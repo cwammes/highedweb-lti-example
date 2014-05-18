@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.highedweb.lti.dto.LtiParams;
-import org.highedweb.lti.service.OauthValidationImpl;
+import org.highedweb.lti.service.LtiServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +20,11 @@ public class AssignmentOne {
 	
 	Logger logger = Logger.getLogger(getClass());
 	
-	private OauthValidationImpl oauthValidationService;
+	private LtiServiceImpl ltiService;
 	
 	@Autowired
-	AssignmentOne(OauthValidationImpl oauthValidationService){
-		this.oauthValidationService = oauthValidationService;
+	AssignmentOne(LtiServiceImpl ltiService){
+		this.ltiService = ltiService;
 	}	
 	
 	@RequestMapping(value="assignmentOne", method = RequestMethod.POST)
@@ -32,10 +32,10 @@ public class AssignmentOne {
 		
 		try{
 			
-			oauthValidationService.OauthValidator(request);
+			ltiService.OauthValidator(request);
 	
 			//Get List of LTI Parameters
-	        List <LtiParams> ltiParams = oauthValidationService.setLtiParams(request);
+	        List <LtiParams> ltiParams = ltiService.setLtiParams(request);
 
 	        //Put parameters into model
 	        model.addAttribute("ltiParams", ltiParams);
