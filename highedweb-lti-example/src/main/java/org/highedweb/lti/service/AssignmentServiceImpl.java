@@ -107,9 +107,7 @@ public class AssignmentServiceImpl implements AssignmentService{
 		assignment.setAssignmentGradeDate(new Date());
 		
 		assignment = assignmentDAO.updateAssignment(assignment);
-		
-		//Need to POST back to LMS
-		
+				
 		return assignment;
 	}
 
