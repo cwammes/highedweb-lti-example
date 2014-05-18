@@ -15,20 +15,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocketFactory;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.highedweb.lti.dao.LtiOauthDAO;
-import org.highedweb.lti.dao.LtiOauthDAOImpl;
 import org.highedweb.lti.domain.Assignment;
 import org.highedweb.lti.dto.LtiParams;
 
-import com.google.api.client.auth.oauth.OAuthHmacSigner;
+import com.google.gdata.client.authn.oauth.OAuthHmacSha1Signer;
 import com.google.gdata.client.authn.oauth.OAuthException;
 import com.google.gdata.client.authn.oauth.OAuthParameters;
-import com.google.gdata.client.authn.oauth.OAuthRsaSha1Signer;
 import com.google.gdata.client.authn.oauth.OAuthUtil;
 import com.google.gdata.util.common.util.Base64;
 
@@ -111,7 +108,7 @@ public class LtiServiceImpl implements LtiService{
 			
 			HttpURLConnection con = null;
 			
-			OAuthHmacSigner hmacSigner = new OAuthHmacSigner();
+			OAuthHmacSha1Signer hmacSigner = new OAuthHmacSha1Signer();
 			OAuthParameters params = new OAuthParameters();
 			params.setOAuthConsumerKey(oauth_consumer_key);
 			params.setOAuthConsumerSecret(oauth_secret);
@@ -119,7 +116,6 @@ public class LtiServiceImpl implements LtiService{
 			params.setOAuthTimestamp(OAuthUtil.getTimestamp());
 			params.setOAuthSignatureMethod("HMAC-SHA1");
 			params.addCustomBaseParameter("oauth_version", "1.0");
-			params.addCustomBaseParameter("realm", "");
 			
 			String method = "GET";
 			if (body != null) {
@@ -138,8 +134,7 @@ public class LtiServiceImpl implements LtiService{
 			String baseString = OAuthUtil.getSignatureBaseString(assignment.getLisOutcomeServiceUrl(), method, params.getBaseParameters());
 			logger.info("\nBase String\n" + baseString + "\n");
 			
-			//String signature = rsaSigner.getSignature(baseString, params);
-			String signature = hmacSigner.computeSignature(baseString);
+			String signature =  hmacSigner.getSignature(baseString, params);
 
 			params.addCustomBaseParameter("oauth_signature", signature);
 			
@@ -149,12 +144,10 @@ public class LtiServiceImpl implements LtiService{
 			con.setDoOutput(true);
 			con.setDoInput(true);
 			con.addRequestProperty("Authorization",	buildAuthHeaderString(params));
-			con.addRequestProperty("Host", "localhost:8080");
 			
 			logger.info("\nbuildAuthHeaderString(params)\n" + buildAuthHeaderString(params) + "\n");
 
 			if (body != null) {
-				//con.addRequestProperty("host", "localhost");
 				con.addRequestProperty("Content-type", "application/xml");
 				con.addRequestProperty("Content-Length", Integer.toString(body.length()));
 			}
@@ -189,9 +182,7 @@ public class LtiServiceImpl implements LtiService{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-			
+		}	
 
 	}
 	
