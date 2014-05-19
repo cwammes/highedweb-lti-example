@@ -8,7 +8,7 @@ The goal of this applicaiton is to build an LTI Application that can be plugged 
 Requirements:
 Java JDK - Anything greater than Java 6 should be adequate.
 Servlet Container - Tomcat 6.0.37 was used in development
-Database - MySQL 
+Database - This uses HSQL for ease of deployment but I would recommend something else, i.e. MySQL 
 Maven
 LMS - This was primarily tested with Instructure Canvas
 
