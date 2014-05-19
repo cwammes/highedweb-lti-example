@@ -43,11 +43,11 @@
         	<artifactId>hibernate-validator</artifactId>
         	<version>4.3.0.Final</version>
         </dependency>
-        <dependency>
-        	<groupId>mysql</groupId>
-        	<artifactId>mysql-connector-java</artifactId>
-        	<version>5.1.20</version>
-        </dependency>
+  		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.2.9</version>
+		</dependency>
         <dependency>
         	<groupId>org.slf4j</groupId>
         	<artifactId>slf4j-log4j12</artifactId>
@@ -160,11 +160,11 @@
     			<log.file>${project.tomcat.directory}/logs/highedweb-lti-example</log.file>
     			
     			<!-- Database Configuration -->
-    			<db.driverClass>com.mysql.jdbc.Driver</db.driverClass>
-    			<db.url>jdbc:mysql://localhost/mediabeacon</db.url>
-    			<db.username>mediabeacon</db.username>
-    			<db.password>password</db.password>
-    			<db.dialect>org.hibernate.dialect.MySQLDialect</db.dialect>
+    			<db.driverClass>org.hsqldb.jdbcDriver</db.driverClass>
+    			<db.url>jdbc:hsqldb:mem:test</db.url>
+    			<db.username>sa</db.username>
+    			<db.password></db.password>
+    			<db.dialect>org.hibernate.dialect.HSQLDialect</db.dialect>
     			
   			</properties>
   			<build>
