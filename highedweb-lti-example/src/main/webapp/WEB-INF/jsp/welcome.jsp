@@ -8,10 +8,29 @@
 </head>
 <body>
 
-<h1></h1>
-
-<h2>Congratulations!</h2>
-<p>You're up and running.</p>
+<h1>Overview</h1>
+<p>
+This is example code that will accompany a presentation at the Michigan Higher Ed Web Conference 2014.  The goal of this applicaiton is to build an LTI Application that can be plugged into any LMS system.
+</p>
+<h2>Assignment One</h2>
+<a href="${pageContext.request.contextPath}/assignmentOne.htm">${pageContext.request.contextPath}/assignmentOne.htm</a>
+<ul>
+	<li>Launch Tool</li>
+	<li>Validates OAuth Signature</li>
+</ul>
+<h2>Assignment Two</h2>
+<a href="${pageContext.request.contextPath}/assignmentTwo.htm">${pageContext.request.contextPath}/assignmentTwo.htm</a>
+	<ul>
+		<li>Identify User Type</li>
+		<li>Student View</li>
+		<li>Instructor View</li>
+	</ul>
+<h2>Assignment Three</h2>
+<a href="${pageContext.request.contextPath}/assignmentThree.htm">${pageContext.request.contextPath}/assignmentThree.htm</a>
+<ul>
+	<li>Data Persistence</li>
+	<li>Instructor can provide an outcome</li>
+</ul>	
 
 </body>
 </html>
